@@ -12,24 +12,30 @@ def steepest_descent(obj_fun: Callable, x_0: np.ndarray, *args, **kwargs) -> np.
     ----------
     obj_fun : function
         objective function to minimize
-    x_0 : numpy array
-        a vector representing initial point
+    x_0 : numpy.mdarray
+        initial point
     *args: 
-        additional arguments
+        additional arguments for obj_fun
 
     Additional params
     ----------
     max_iter : int 
         maximum number of iterations
-    tol : float
+    tol : np.longdouble
         tolerance for the solution
     gradient_fun : function
         gradient implementation
         
     Return
     ----------
-    x : numpy array
+    x : numpy.longdouble or numpy.ndarray
         minimizer of the objective function
+    iter : int
+        iteration counter
+    stopping_criterion : int
+        stopping criterion index
+    stopping_values : numpy.ndarray
+        values of stopping criterions
     """
 
     max_iter = kwargs.get('max_iter',1000)
