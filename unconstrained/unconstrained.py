@@ -329,3 +329,106 @@ def conjugate_gradient(obj_fun: Callable, x_0: np.ndarray, * args, **kwargs) -> 
         stopping_values[1] = arg_step_new
 
     return x, iter, stopping_criterion, stopping_values
+
+
+def quasi_newton_method(obj_fun: Callable, x_0: np.ndarray, *args, **kwargs) -> np.ndarray:
+    """
+    The BFGS Quasi-Newton Method optimization
+
+    Params
+    ----------
+    obj_fun : function
+        objective function to optimize
+    x_0 : numpy.ndarray
+        a vector representing initial point
+    *args: 
+        additional arguments for obj_fun
+
+    Additional params
+    ----------
+    max_iter : int 
+        maximum number of iterations
+    tol : np.longdouble
+        tolerance for the solution
+    gradient_fun : function
+        implementation for gradient estimation
+
+    Return
+    ----------
+    x : numpy.longdouble or numpy.ndarray
+        minimizer of the objective function
+    iter : int
+        iteration counter
+    stopping_criterion : int
+        stopping criterion index
+    stopping_values : numpy.ndarray
+        values of stopping criterions
+    """
+    
+    max_iter = kwargs.get('max_iter',1000)
+    tol = kwargs.get('tol',np.longdouble(1e-5))
+    gradient_fun = kwargs.get('gradient_fun',gradient)
+
+    if isinstance(x_0,np.longdouble):
+        dim_num = 1
+    elif isinstance(x_0, np.ndarray):
+        if len(x_0.shape) != 1:
+            raise ValueError("x_0 should have only 1 dimension, got {}".format(len(x_0.shape)))
+        if isinstance(x_0[0],np.longdouble):
+            dim_num = len(x_0)
+        else:
+            raise TypeError("Elements of x_0 should be of type np.longdouble, got {}".format(type(x_0[0])))
+    else:
+        raise TypeError("x_0 should be of type numpy.longdouble or numpy.ndarray, got {}".format(type(x_0)))
+
+    x = np.longdouble(x_0)
+    grad = gradient_fun(obj_fun, x, *args)
+    if dim_num == 1:
+        hess = 1
+    else:
+        hess = np.identity(n=dim_num, dtype=np.longdouble)
+    iter = 0
+    stopping_values = np.zeros(4)
+    to_stop=False
+    while not to_stop:
+        if dim_num == 1:
+            p = -hess * grad
+        else:
+            p = -hess @ grad 
+        
+        alpha = line_search_alpha(obj_fun, x, p, grad, *args, c=1e-4, rho=0.9)
+        x_new = x + alpha*p
+        grad_new = gradient_fun(obj_fun, x_new, *args)
+        s = x_new - x
+        y = grad_new - grad
+        rho = 1/(np.dot(y,s))
+        if iter == 0: # scale H before the first update
+            hess *= np.dot(y,s)/np.dot(y,y)
+        if dim_num == 1:
+            hess = (1-rho*s*y)*hess*(1-rho*y*s)+rho*s*s 
+        else:
+            I = np.identity(dim_num)
+            hess = (I-rho*np.outer(s,y))@hess@(I-rho*np.outer(y,s))+rho*np.outer(s,s)
+        iter += 1
+        fun_value_step_new = np.abs(obj_fun(x_new, *args)-obj_fun(x, *args))
+        arg_step_new = np.linalg.norm(x_new-x)
+        stopping_values[2] = np.linalg.norm(grad_new)
+        stopping_values[3] = iter
+        x = x_new
+        grad = grad_new
+        # check stopping criteria
+        if fun_value_step_new <= tol*stopping_values[0]:
+            stopping_criterion = 0
+            to_stop = True
+        if arg_step_new <= tol*stopping_values[1]:
+            stopping_criterion = 1
+            to_stop = True
+        if stopping_values[2] <= tol:
+            stopping_criterion = 2
+            to_stop = True
+        if iter>=max_iter:
+            stopping_criterion = 3
+            to_stop = True    
+        stopping_values[0] = fun_value_step_new
+        stopping_values[1] = arg_step_new
+    return x, iter, stopping_criterion, stopping_values

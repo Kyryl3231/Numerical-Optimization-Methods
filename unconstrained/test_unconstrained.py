@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import test_functions as tf
-from unconstrained import steepest_descent, newton_method, conjugate_gradient
+from unconstrained import steepest_descent, newton_method, conjugate_gradient, quasi_newton_method
 import sys
 sys.path.append("..")
 from utilities.gradient import gradient_ls
@@ -12,8 +12,8 @@ criteria = ["epsilon * |f(x_k)-f(x_k-1)| >= |f(x_k+1) - f(x_k)|",
             "epsilon >= ||gradient f(x_k)||", 
             "number of iterations"]
 
-optimization_methods = [steepest_descent, newton_method, conjugate_gradient]
-optimization_methods_names = ["The Steepest Descent", "Newton Method", "PR+ Conjugate Gradient"]
+optimization_methods = [steepest_descent, newton_method, conjugate_gradient, quasi_newton_method]
+optimization_methods_names = ["The Steepest Descent", "Newton Method", "PR+ Conjugate Gradient", "BFGS Quasi-Newton Method"]
 for opt_fun, opt_fun_name in zip(optimization_methods, optimization_methods_names):            
     print(opt_fun_name)
     # TEST 1
