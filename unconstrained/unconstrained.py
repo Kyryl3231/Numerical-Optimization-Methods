@@ -1,5 +1,8 @@
 import numpy as np
 from typing import Callable
+import sys
+sys.path.append("..")
+
 from utilities.gradient import gradient
 from utilities.step_length import line_search_alpha
 
