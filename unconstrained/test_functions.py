@@ -12,7 +12,8 @@ test1_fun_names = ["Rosenbrock", "Difficult function"]
 test1_solutions = np.array([[(1, 1)], [(0, 1), (4, 0)]], dtype=np.ndarray)
 for i in range(len(test1_solutions)):
     test1_solutions[i] = np.array(test1_solutions[i])
-test1_starting_points = np.longdouble([[-0.2,1.2], [3.8, 0.1], [0,0], [-1,0], [0,-1]])
+# test1_starting_points = np.longdouble([[-0.2,1.2], [3.8, 0.1], [0,0], [-1,0], [0,-1]])
+test1_starting_points = np.longdouble([[-0.2,1.2], [0,0], [-1,0]])
 
 # TEST 2
 def phi(x: np.ndarray, t: np.longdouble):
@@ -40,4 +41,5 @@ def taylor_expansion_sin(x, degree):
 # (q,m,max_degree)
 # q - points are generated on [-q, q]
 # m - number of generated arguments
-test2_param_list = [(1, 50, 2), (2, 50, 3), (2.5, 100, 3), (3, 100, 3), (4, 100, 4)]
+# test2_param_list = [(1, 50, 2), (2, 50, 3), (2.5, 100, 3), (3, 100, 3), (4, 100, 4)]
+test2_param_list = [(1, 50, 2), (3, 100, 3)]
