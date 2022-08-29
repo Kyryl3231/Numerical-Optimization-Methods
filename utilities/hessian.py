@@ -1,7 +1,8 @@
 import numpy as np
-import sys
 from typing import Callable
-from gradient import gradient
+import sys
+sys.path.append('..')
+from utilities.gradient import gradient
 
 
 def hessian(obj_fun: Callable, x):
@@ -60,16 +61,20 @@ def hessian(obj_fun: Callable, x):
         return resvals
 
 
-def hessian_ls(x, a):
+def hessian_ls(obj_fun, x, a, b):
     """
     Estimate Hessian for least-squares problem at x
 
     Params
     ----------
+    obj_fun : function
+        objective function
     x : numpy.ndarray
-        point at which the gradient is estimated
+        point at which the Hessian is estimated
     a : numpy.ndarray
         generated argument points
+    b : numpy.ndarray
+        function values corresponding to a
     
     Return
     ----------
