@@ -15,7 +15,7 @@ criteria = ["epsilon * |f(x_k)-f(x_k-1)| >= |f(x_k+1) - f(x_k)|",
 optimization_methods = [steepest_descent, newton_method, conjugate_gradient, quasi_newton_method]
 optimization_methods_names = ["The Steepest Descent", "Newton Method", "PR+ Conjugate Gradient", "BFGS Quasi-Newton Method"]
 for opt_fun, opt_fun_name in zip(optimization_methods, optimization_methods_names):            
-    print(opt_fun_name)
+    print('#'*10, '\n', opt_fun_name,'\n', '#'*10, '\n')
     # TEST 1
     for fun,sol,name in zip(tf.test1_fun_list, tf.test1_solutions, tf.test1_fun_names):
         print("Function: {}".format(name))
@@ -65,4 +65,4 @@ for opt_fun, opt_fun_name in zip(optimization_methods, optimization_methods_name
         plt.title("[-{}, {}] with {} points and max_degree = {}".format(q,q,m,max_degree))
         plt.legend()
     plt.show()
-    fig.savefig('test_plots')
+    fig.savefig(opt_fun_name)

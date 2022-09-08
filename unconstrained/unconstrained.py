@@ -8,6 +8,50 @@ from utilities.gradient import gradient
 from utilities.hessian import hessian
 from utilities.step_length import line_search_alpha
 
+def check_stopping_criteria(stopping_values, fun_step_new, arg_step_new, tol, max_iter, iter):
+    """
+    Check stopping criteria for optimization
+
+    Params
+    ----------
+    stopping_values : numpy.ndarray
+        values of stopping criterions 
+    fun_step_new : float
+        difference in objective function value btw x_new and x
+    arg_step_new : float
+        difference btw x_new and x
+    tol : np.longdouble
+        tolerance for the solution
+    max_iter : int 
+        maximum number of iterations
+    iter : int
+        current iteration number
+
+    Return
+    ----------
+    to_stop : bool
+        stop flag for optimization
+    stopping_criterion : int
+        stopping criterion index
+    """
+
+    if fun_step_new <= tol*stopping_values[0]:
+        to_stop = True
+        stopping_criterion = 0
+        return to_stop, stopping_criterion
+    if arg_step_new <= tol*stopping_values[1]:
+        to_stop = True
+        stopping_criterion = 1
+        return to_stop, stopping_criterion
+    if stopping_values[2] <= tol:
+        to_stop = True
+        stopping_criterion = 2
+        return to_stop, stopping_criterion
+    if iter>=max_iter:
+        to_stop = True
+        stopping_criterion = 3
+        return to_stop, stopping_criterion
+    return False, None
 
 def steepest_descent(obj_fun: Callable, x_0: np.ndarray, *args, **kwargs) -> np.ndarray:
     """
@@ -86,18 +130,8 @@ def steepest_descent(obj_fun: Callable, x_0: np.ndarray, *args, **kwargs) -> np.
         arg_step_new = np.linalg.norm(x_new-x)
         x = x_new 
         # check stopping criteria
-        if fun_value_step_new <= tol*stopping_values[0]:
-            stopping_criterion = 0
-            to_stop = True
-        if arg_step_new <= tol*stopping_values[1]:
-            stopping_criterion = 1
-            to_stop = True
-        if stopping_values[2] <= tol:
-            stopping_criterion = 2
-            to_stop = True
-        if iter>=max_iter:
-            stopping_criterion = 3
-            to_stop = True    
+        to_stop, stopping_criterion = check_stopping_criteria(stopping_values, fun_value_step_new,
+                                                              arg_step_new, tol, max_iter, iter)
         stopping_values[0] = fun_value_step_new
         stopping_values[1] = arg_step_new
 
@@ -222,18 +256,8 @@ def newton_method(obj_fun: Callable, x_0: np.ndarray, *args, **kwargs) -> np.nda
         arg_step_new = np.linalg.norm(x_new-x)
         x = x_new 
         # check stopping criteria
-        if fun_value_step_new <= tol*stopping_values[0]:
-            stopping_criterion = 0
-            to_stop = True
-        if arg_step_new <= tol*stopping_values[1]:
-            stopping_criterion = 1
-            to_stop = True
-        if stopping_values[2] <= tol:
-            stopping_criterion = 2
-            to_stop = True
-        if iter>=max_iter:
-            stopping_criterion = 3
-            to_stop = True    
+        to_stop, stopping_criterion = check_stopping_criteria(stopping_values, fun_value_step_new,
+                                                              arg_step_new, tol, max_iter, iter)
         stopping_values[0] = fun_value_step_new
         stopping_values[1] = arg_step_new
     return x, iter, stopping_criterion, stopping_values
@@ -313,18 +337,8 @@ def conjugate_gradient(obj_fun: Callable, x_0: np.ndarray, * args, **kwargs) -> 
         x = x_new
         grad = grad_new
         # check stopping criteria
-        if fun_value_step_new <= tol*stopping_values[0]:
-            stopping_criterion = 0
-            to_stop = True
-        if arg_step_new <= tol*stopping_values[1]:
-            stopping_criterion = 1
-            to_stop = True
-        if stopping_values[2] <= tol:
-            stopping_criterion = 2
-            to_stop = True
-        if iter>=max_iter:
-            stopping_criterion = 3
-            to_stop = True    
+        to_stop, stopping_criterion = check_stopping_criteria(stopping_values, fun_value_step_new,
+                                                              arg_step_new, tol, max_iter, iter)
         stopping_values[0] = fun_value_step_new
         stopping_values[1] = arg_step_new
 
@@ -417,18 +431,8 @@ def quasi_newton_method(obj_fun: Callable, x_0: np.ndarray, *args, **kwargs) -> 
         x = x_new
         grad = grad_new
         # check stopping criteria
-        if fun_value_step_new <= tol*stopping_values[0]:
-            stopping_criterion = 0
-            to_stop = True
-        if arg_step_new <= tol*stopping_values[1]:
-            stopping_criterion = 1
-            to_stop = True
-        if stopping_values[2] <= tol:
-            stopping_criterion = 2
-            to_stop = True
-        if iter>=max_iter:
-            stopping_criterion = 3
-            to_stop = True    
+        to_stop, stopping_criterion = check_stopping_criteria(stopping_values, fun_value_step_new,
+                                                              arg_step_new, tol, max_iter, iter)
         stopping_values[0] = fun_value_step_new
         stopping_values[1] = arg_step_new
     return x, iter, stopping_criterion, stopping_values
