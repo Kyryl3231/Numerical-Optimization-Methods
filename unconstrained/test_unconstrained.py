@@ -15,7 +15,7 @@ criteria = ["epsilon * |f(x_k)-f(x_k-1)| >= |f(x_k+1) - f(x_k)|",
 optimization_methods = [steepest_descent, newton_method, conjugate_gradient, quasi_newton_method]
 optimization_methods_names = ["The Steepest Descent", "Newton Method", "PR+ Conjugate Gradient", "BFGS Quasi-Newton Method"]
 
-test_file = open('test_results.txt', 'w')
+test_file = open('unconstrained/test_results.txt', 'w')
 
 for opt_fun, opt_fun_name in zip(optimization_methods, optimization_methods_names):            
     test_file.writelines(['#'*10, '\n', opt_fun_name, '\n', '#'*10, '\n'*2])
@@ -71,6 +71,6 @@ for opt_fun, opt_fun_name in zip(optimization_methods, optimization_methods_name
         plt.title("[-{}, {}] with {} points and max_degree = {}".format(q,q,m,max_degree))
         plt.legend()
     # plt.show()
-    fig.savefig(opt_fun_name)
+    fig.savefig('unconstrained/'+opt_fun_name)
 
 test_file.close()
