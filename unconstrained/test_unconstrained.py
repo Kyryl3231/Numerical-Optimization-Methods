@@ -1,9 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import test_functions as tf
-from unconstrained import steepest_descent, newton_method, conjugate_gradient, quasi_newton_method
 import sys
 sys.path.append("..")
+from unconstrained.unconstrained import steepest_descent, newton_method, conjugate_gradient, quasi_newton_method
+import unconstrained.test_functions as tf
 from utilities.gradient import gradient_ls
 from utilities.hessian import hessian_ls
 
