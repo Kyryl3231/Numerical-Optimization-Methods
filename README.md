@@ -46,6 +46,42 @@ To see test results run `python -m unconstrained.test_unconstrained` in the base
 Text output will be written to the `unconstrained/test_unconstrained_results.txt`
 Graphical representation of the solutions for least square problems can be found at `unconstrained/[optimization_method_name].png` (i.e. `unconstrained/The Steepest Descent.png`)
 
+## Utilities
+Here you can find some details about additional implemented functions.
+
+### Gradient Estimation
+
+**Central-difference formula was used**
+$\frac{\partial{f}}{\partial{x_i}}(x) = \frac{f(x+\epsilon e_i)-f(x-\epsilon e_i)}{2\epsilon} \\$ 
+
+Float data type used: `numpy.longdouble`
+
+On Windows with $\epsilon = 10^{-5}$
+On Linux (Ubuntu 18.04.2 LTS) with $\epsilon = 10^{-6}$
+*Reason*: on Windows the highest possible precision of float datatype is 15, on Linux - 18 <br>
+Recommendation from the Book (p.197) $\epsilon = \textbf{u}^{\frac{1}{3}}$
+$\textbf{u}$ - unit roundoff (bound on the relative error that is introduced whenever an arithmetic
+operation is performed on two floating-point numbers)
+
+**Another option: forward-difference**
+
+$\frac{\partial{f}}{\partial{x_i}}(x) = \frac{f(x+\epsilon e_i)-f(x)}{\epsilon} \\$
+
+Recommendation from the Book $\epsilon = \sqrt{\textbf{u}}$
+On Windows with $\epsilon = 10^{-7}$
+On Linux (Ubuntu 18.04.2 LTS) with $\epsilon = 10^{-9} \\$
+
+### Hessian Matrix Estimation
+Used formula
+
+$\frac{\partial^2 f(x)}{\partial x_i \partial x_j}
+= \frac{f(x+\epsilon e_i + \epsilon e_j) - f(x+\epsilon e_i) - f(x+\epsilon e_j) + f(x)}{\epsilon^2}$
+
+### Step-Length line search
+Used technique - ***Backtracking Line Search***
+
+Line search algorithm for the Wolfe conditions can also be used `[is preffered]`.
+
 ## References
 <ul>
   <li> :book: "Numerical Optimization" by Jorge Nocedal and Stephen J. Wright
