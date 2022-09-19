@@ -1,6 +1,6 @@
 # Numerical-Optimization-Methods
 
-This repository is dedicated to numerical optimization methods :magic_wand: :sparkles:.
+This repository is dedicated to numerical optimization methods :sparkles:.
 
 ## Unconstrained Optimization
 All implemented methods are line search methods.
@@ -18,10 +18,11 @@ In case it isn't positive definite, a multiple of identity matrix is added.
 Optimization method based on conjugacy of step directions.
 The `Polak–Ribiere` variation is implemented.
 Update rule for a scalar that ensures conjugacy of step directions:
-$\beta^{+}_{k+1} = max(0, \beta^{PR}_{k+1})$, where 
+$\beta^{+}\_{k+1} = max(0, \beta^{PR}_{k+1})$, where 
 
-$\beta^{PR}_{k+1} = \frac{\nabla f^T_{k+1}(\nabla f_{k+1} - \nabla f_k)}{||\nabla f_k||^2}$
-$f$ - objective function
+$$\beta^{PR}\_{k+1} = \frac{\nabla f^T_{k+1}(\nabla f_{k+1} - \nabla f_k)}{||\nabla f_k||^2}$$
+
+$$f - \text{objective function}$$
 
 ### Quasi-Newton Method
 Optimization method that uses an approximation of second order information.
@@ -52,30 +53,35 @@ Here you can find some details about additional implemented functions.
 ### Gradient Estimation
 
 **Central-difference formula was used**
-$\frac{\partial{f}}{\partial{x_i}}(x) = \frac{f(x+\epsilon e_i)-f(x-\epsilon e_i)}{2\epsilon} \\$ 
+
+$$\frac{\partial{f}}{\partial{x_i}}(x) = \frac{f(x+\epsilon e_i)-f(x-\epsilon e_i)}{2\epsilon}$$
 
 Float data type used: `numpy.longdouble`
 
 On Windows with $\epsilon = 10^{-5}$
+
 On Linux (Ubuntu 18.04.2 LTS) with $\epsilon = 10^{-6}$
-*Reason*: on Windows the highest possible precision of float datatype is 15, on Linux - 18 <br>
+
+*Reason*: on Windows the highest possible precision of float datatype is 15, on Linux - 18
+
 Recommendation from the Book (p.197) $\epsilon = \textbf{u}^{\frac{1}{3}}$
 $\textbf{u}$ - unit roundoff (bound on the relative error that is introduced whenever an arithmetic
 operation is performed on two floating-point numbers)
 
 **Another option: forward-difference**
 
-$\frac{\partial{f}}{\partial{x_i}}(x) = \frac{f(x+\epsilon e_i)-f(x)}{\epsilon} \\$
+$$\frac{\partial{f}}{\partial{x_i}}(x) = \frac{f(x+\epsilon e_i)-f(x)}{\epsilon}$$
 
 Recommendation from the Book $\epsilon = \sqrt{\textbf{u}}$
+
 On Windows with $\epsilon = 10^{-7}$
-On Linux (Ubuntu 18.04.2 LTS) with $\epsilon = 10^{-9} \\$
+
+On Linux (Ubuntu 18.04.2 LTS) with $\epsilon = 10^{-9}$
 
 ### Hessian Matrix Estimation
 Used formula
 
-$\frac{\partial^2 f(x)}{\partial x_i \partial x_j}
-= \frac{f(x+\epsilon e_i + \epsilon e_j) - f(x+\epsilon e_i) - f(x+\epsilon e_j) + f(x)}{\epsilon^2}$
+$$\frac{\partial^2 f(x)}{\partial x_i \partial x_j} = \frac{f(x+\epsilon e_i + \epsilon e_j) - f(x+\epsilon e_i) - f(x+\epsilon e_j) + f(x)}{\epsilon^2}$$
 
 ### Step-Length line search
 Used technique - ***Backtracking Line Search***
